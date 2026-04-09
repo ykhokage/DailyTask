@@ -42,4 +42,12 @@ class DefaultTaskRepository(
         val nextId = (taskDao.getMaxId() ?: 0L) + 1L
         taskDao.insert(draft.toEntity(nextId))
     }
+
+    override suspend fun updateTask(task: Task) = withContext(Dispatchers.IO) {
+        taskDao.update(task.toEntity())
+    }
+
+    override suspend fun deleteTaskById(id: Long) = withContext(Dispatchers.IO) {
+        taskDao.deleteById(id)
+    }
 }
